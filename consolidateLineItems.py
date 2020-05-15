@@ -7,7 +7,7 @@ import time
 
 # consolidates all shipping label invoice line items into a single line item
 # and returns the consolidated invoice
-def consolidateLineItems(invoiceID):
+def consolidateLineItems(originalInvoice):
     
     # grabs the invoice from the db and converts it to a list. 
     # Also grabs the customer ID / currency used by the invoice, and stores the line
@@ -16,9 +16,7 @@ def consolidateLineItems(invoiceID):
     # TESTING
     with open('originalInvoice.json') as f:
         originalInvoice = json.load(f)
-
-    #invoice = db.session.query.filter_by(id=invoiceID).first()
-    #originalInvoice = json.loads(invoice.originalInvoiceJSON)
+        
     consolidatedInvoice = copy.deepcopy(originalInvoice)
     originalLineItems = originalInvoice['lines']['data']
     consolidatedLineItems = consolidatedInvoice['lines']['data']
