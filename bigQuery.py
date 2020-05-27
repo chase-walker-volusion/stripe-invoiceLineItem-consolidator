@@ -1,23 +1,10 @@
 from google.cloud import bigquery
-
+import config
 client = bigquery.Client()
 
 lineItemTotal = 0
 
-QUERY = ("""
-    SELECT line_item_subscription,id, invoice_date, count(distinct line_item_id) as line_item_count FROM `v1-dev-main.stripe.vw_LatestInvoices_lineitems` 
-    WHERE lower(line_item_description) like '%ship%cost%label%'
-    AND invoice_date >= '2020-05-01'
-    GROUP BY
-    line_item_subscription,id, invoice_date
-    HAVING count(distinct line_item_id) >= 5
-""")
-QUERY2 = ("""
-    SELECT * FROM `v1-dev-main.stripe.vw_LatestInvoices_lineitems`
-    WHERE id = 'invoiceID'
-    AND line_item_subscription = 'subscriptionID'
-    ORDER BY line_item_id
-""")
+
 
 # adds any number of kwargs to replace variables in a given query
 # key should be the same as the text variable within the query
@@ -39,12 +26,18 @@ def queryJob(query):
             lineItemTotal += row[2] # row[2] is amount in query2
     return rows
 
-query1 = queryJob(QUERY)
+query1 = queryJob(config.QUERY)
 
 # loops through each row in query1 and adds the returned params (subscriptionID, invoiceID)
 # to QUERY2, resulting in newQuery. Each instance of newQuery is then sent to queryJob
 for row in query1:
-    newQuery = addParams(QUERY2, subscriptionID=row[0], invoiceID=row[1])
-    queryJob(newQuery)
+    newQuery = addParams(config.QUERY2, subscriptionID=row[0], invoiceID=row[1])
+    query2  =  queryJob(newQuery)
+
+    # for rows in query2:
+    #   retrive invoice item record from stripe
+    #   write record to BQ dataset
+    #   request delete from stripe
+    #   
 
 print("Total Shipping Cost (in cents): " + str(lineItemTotal))
