@@ -2,10 +2,6 @@ from google.cloud import bigquery
 import config
 client = bigquery.Client()
 
-lineItemTotal = 0
-
-
-
 # adds any number of kwargs to replace variables in a given query
 # key should be the same as the text variable within the query
 def addParams(query, **kwargs):
@@ -17,13 +13,8 @@ def addParams(query, **kwargs):
 # take a SQL query string and returns the query result from BQ
 # also prints out each row returned, and adds the amount for the row to lineItemTotal
 def queryJob(query):
-    global lineItemTotal
     query_job = client.query(query) 
     rows = list(query_job.result())
-    for row in rows:
-        print(row)
-        if len(row) > 4: # query1 is only len 4, so anything larger is query2
-            lineItemTotal += row[2] # row[2] is amount in query2
     return rows
 
 query1 = queryJob(config.QUERY)
