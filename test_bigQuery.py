@@ -8,3 +8,6 @@ def test_addParams():
 
 def test_queryJob():
     assert isinstance(queryJob(config.QUERY), list)
+
+def test_stripePull():
+   assert isinstance(stripePull(id), object) 

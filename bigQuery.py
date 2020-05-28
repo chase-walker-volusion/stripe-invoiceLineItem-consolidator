@@ -17,6 +17,10 @@ def queryJob(query):
     rows = list(query_job.result())
     return rows
 
+
+def stripePull(id):
+
+
 query1 = queryJob(config.QUERY)
 
 # loops through each row in query1 and adds the returned params (subscriptionID, invoiceID)
@@ -30,5 +34,3 @@ for row in query1:
     #   write record to BQ dataset
     #   request delete from stripe
     #   
-
-print("Total Shipping Cost (in cents): " + str(lineItemTotal))
