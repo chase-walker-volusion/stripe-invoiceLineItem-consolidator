@@ -58,7 +58,6 @@ for invoice in qualifyingInvoices:
     with open('backup.json', 'a') as f:
         json.dump(stripeBackup, f)
 
-    # deletes the invoice item
     # stripe.InvoiceItem.delete(invoiceItemID)
 
 # uploads the backup.json file to the backupTable
