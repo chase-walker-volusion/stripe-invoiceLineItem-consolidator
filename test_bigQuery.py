@@ -9,5 +9,9 @@ def test_addParams():
 def test_queryJob():
     assert isinstance(queryJob(config.QUERY), list)
 
-def test_stripePull():
-   assert isinstance(stripePull(id), object) 
+def test_uploadJob():
+    from google.cloud import bigquery
+    backupDataSet = bigquery_client.dataset('dev_chasew')
+    backupTable = backupDataSet.table('stripe_lineItem_backup')
+    
+    assert isinstance(uploadJob(backup.json, backupTable), list)
